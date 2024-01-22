@@ -1,4 +1,4 @@
-const City = {
+export const City = {
   Hamburg: 'Hamburg',
   Paris: 'Paris',
   Cologne: 'Cologne',

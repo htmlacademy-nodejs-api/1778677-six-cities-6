@@ -1,4 +1,4 @@
-const OfferType = {
+export const OfferType = {
   Apartment: 'apartment',
   House: 'house',
   Room: 'room',

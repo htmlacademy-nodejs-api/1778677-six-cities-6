@@ -14,21 +14,6 @@
       "Прекрасный, уединенный отель с великолепным бассейном и зоной СПА",
       "Вас ждет отличная комната со всеми удобствами, без надоедливых соседей"
       ],
-    "postDates": [
-      "2023-08-18T07:22:06",
-      "2023-09-14T07:22:06",
-      "2023-11-01T07:22:06",
-      "2023-11-15T07:22:06",
-      "2023-05-22T07:22:06"
-    ],
-    "cities": [
-      "Hamburg",
-      "Paris",
-      "Cologne",
-      "Brussels",
-      "Amsterdam",
-      "Dusseldorf"
-    ],
     "previewImages": [
       "1.jpg",
       "2.jpg",
@@ -49,30 +34,6 @@
     ],
     "isFavorites": [
       true, false
-    ],
-    "rating": [
-      4.5, 4.6, 4.8, 4.9, 5
-    ],
-    "types": [
-      "apartment", "house", "room", "hotel"
-    ],
-    "bedrooms": [
-      1, 2, 3, 4, 5
-    ],
-    "maxAdults": [
-      1, 2, 3, 4, 5
-    ],
-    "prices": [
-     1000, 2500, 3200, 800, 4500
-    ],
-    "goods": [
-      "Breakfast",
-      "Air conditioning",
-      "Laptop friendly workspace",
-      "Baby seat",
-      "Washer",
-      "Towels",
-      "Fridge"
     ],
     "names": [
       "Иван Иванов",
@@ -101,13 +62,6 @@
       "11111",
       "98765",
       "121212"
-    ],
-    "userTypes": [
-      "Pro",
-      "Regular"
-    ],
-    "comments": [
-      1, 15, 23, 6, 4
     ],
     "latitudes": [
       "53.5511",
