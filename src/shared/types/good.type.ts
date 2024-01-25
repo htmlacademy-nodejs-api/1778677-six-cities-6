@@ -1,4 +1,4 @@
-const Good = {
+export const Good = {
   Breakfast: 'Breakfast',
   AirConditioning: 'Air conditioning',
   LaptopFriendlyWorkspace: 'Laptop friendly workspace',

@@ -1,0 +1,24 @@
+export type MockServerData = {
+  titles: string[];
+  descriptions: string[];
+  postDates: string[];
+  cities: string[];
+  previewImages: string[];
+  images: string[][];
+  isPremium: boolean[];
+  isFavorites: boolean[];
+  rating: number[];
+  types: string[];
+  bedrooms: number[];
+  maxAdults: number[];
+  prices: number[];
+  goods: string[];
+  names: string[];
+  emails: string[];
+  avatars: string[];
+  passwords: string[];
+  userTypes: string[];
+  comments: number[];
+  latitudes: string[];
+  longitudes: string[];
+};

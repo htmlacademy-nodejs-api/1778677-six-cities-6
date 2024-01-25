@@ -1,4 +1,4 @@
-const UserType = {
+export const UserType = {
   Pro: 'Pro',
   Regular: 'Regular'
 } as const;
