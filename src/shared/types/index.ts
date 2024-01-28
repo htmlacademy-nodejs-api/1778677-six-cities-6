@@ -7,3 +7,4 @@ export * from './good.type.js';
 export * from './offer-type.type.js';
 export * from './user-type.type.js';
 export * from './mock-server-data.type.js';
+export * from './component.enum.js';
