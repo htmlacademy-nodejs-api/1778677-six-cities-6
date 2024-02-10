@@ -3,6 +3,8 @@ import { User, UserType } from '../../types/index.js';
 
 export interface UserDocument extends User, Document {
   userType: UserType;
+  createdAt: Date,
+  updatedAt: Date,
 }
 
 const userSchema = new Schema({
@@ -14,7 +16,8 @@ const userSchema = new Schema({
     type: String,
     enum: Object.values(UserType),
     required: true
-  }
-});
+  },
+}, { timestamps: true });
+
 
 export const UserModel = model<UserDocument>('User', userSchema);
