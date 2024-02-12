@@ -23,7 +23,7 @@ export class UserEntity extends defaultClasses.TimeStamps implements User {
   @prop({ required: false, match: [/\.(jpg|png)$/i, 'User image not in .jpg or .png format']})
   public avatar: string;
 
-  @prop({ required: true, minlength: [6,'Min length for password is 6'], maxlength: [12,'Max length for password is 12'], default: ''})
+  @prop({ required: true, minlength: [6,'Min length for password is 6'], maxlength: [12,'Max length for password is 12']})
   private password?: string;
 
   @prop({ required: true, type: () => String, enum: Object.values(UserType)})
