@@ -1,4 +1,9 @@
-export type OfferLocation = {
-  latitude: number;
-  longitude: number;
-};
+import { prop } from '@typegoose/typegoose';
+
+export class OfferLocation {
+  @prop({ required: true })
+    latitude!: number;
+
+  @prop({ required: true })
+    longitude!: number;
+}
