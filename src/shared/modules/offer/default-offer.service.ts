@@ -7,6 +7,7 @@ import { OfferEntity } from './offer.entity.js';
 import { CreateOfferDto } from './dto/create-offer.dto.js';
 import { UpdateOfferDto } from './dto/update-offer.dto.js';
 import { DEFAULT_OFFER_COUNT, DEFAULT_PREMIUM_OFFER_COUNT } from './offer.constant.js';
+import { SortOrder } from '../../types/sort-order.enum.js';
 
 @injectable()
 export class DefaultOfferService implements OfferService {
@@ -14,6 +15,46 @@ export class DefaultOfferService implements OfferService {
     @inject(Component.Logger) private readonly logger: Logger,
     @inject(Component.OfferModel) private readonly offerModel: types.ModelType<OfferEntity>
   ) {}
+
+  private commentsPipeline = [
+    {
+      $lookup: {
+        from: 'comments',
+        let: { offerId: '$_id' },
+        pipeline: [{ $match: { $expr: { $eq: ['$$offerId', '$offerId'] } } }, { $project: { _id: 0, rating: 1 } }],
+        as: 'comments',
+      },
+    },
+    {
+      $addFields: {
+        commentsCount: { $size: '$comments' },
+        rating: { $avg: '$comments.rating' },
+      },
+    },
+    { $unset: ['comments'] },
+  ];
+
+  private favoritesPipeline = [
+    {
+      $lookup: {
+        from: 'users',
+        let: { offerId: '$_id' },
+        pipeline: [{ $match: { $expr: { $in: ['$$offerId', '$favorites'] } } }, { $project: { _id: 1 } }],
+        as: 'isFavorite',
+      },
+    },
+  ];
+
+  private authorPipeline = [
+    {
+      $lookup: {
+        from: 'users',
+        localField: 'authorId',
+        foreignField: '_id',
+        as: 'author',
+      },
+    },
+  ];
 
   public async create(dto: CreateOfferDto): Promise<DocumentType<OfferEntity>> {
     const result = await this.offerModel.create(dto);
@@ -24,17 +65,34 @@ export class DefaultOfferService implements OfferService {
 
   public async findById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel
-      .findById(offerId)
-      .populate(['userId'])
-      .exec();
+      .aggregate([
+        {
+          $match: {
+            $expr: {
+              $eq: ['$_id', { $toObjectId: offerId }],
+            },
+          },
+        },
+        ...this.commentsPipeline,
+        ...this.authorPipeline,
+        ...this.favoritesPipeline,
+      ])
+      .exec()
+      .then(([result]) => result ?? null);
   }
 
-  public async find(count?: number): Promise<DocumentType<OfferEntity>[]> {
+  public async find(count?: number, sort: Record<string, SortOrder> = { postDate: SortOrder.Desc },): Promise<DocumentType<OfferEntity>[]> {
     const limit = count ?? DEFAULT_OFFER_COUNT;
     return this.offerModel
-      .find({limit})
-      .populate(['userId'])
+      .aggregate([
+        ...this.commentsPipeline,
+        ...this.authorPipeline,
+        ...this.favoritesPipeline,
+        { $limit: limit },
+        { $sort: sort },
+      ])
       .exec();
+
   }
 
   public async deleteById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
@@ -65,15 +123,30 @@ export class DefaultOfferService implements OfferService {
   public async findPremium(count?: number): Promise<DocumentType<OfferEntity>[]> {
     const limit = count ?? DEFAULT_PREMIUM_OFFER_COUNT;
     return this.offerModel
-      .find({isPremium: true}, {limit})
-      .populate(['userId'])
+      .aggregate([
+        {
+          $match: {
+            $and: [{ isPremium: true }],
+          },
+        },
+        ...this.commentsPipeline,
+        ...this.authorPipeline,
+        ...this.favoritesPipeline,
+        { $limit: limit },
+        { $sort: { postDate: SortOrder.Desc } },
+      ])
       .exec();
   }
 
-  public async findFavorites(): Promise<DocumentType<OfferEntity>[]> {
+  public async findFavorites(userId: string): Promise<DocumentType<OfferEntity>[]> {
     return this.offerModel
-      .find({isFavorite: true})
-      .populate(['userId'])
+      .aggregate([
+        ...this.favoritesPipeline,
+        { $match: { $expr: { $in: [{ _id: { $toObjectId: userId } }, '$isFavorite'] } } },
+        ...this.commentsPipeline,
+        ...this.authorPipeline,
+        { $sort: { postDate: SortOrder.Desc } },
+      ])
       .exec();
   }
 

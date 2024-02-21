@@ -35,12 +35,6 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({ required: true })
   public isPremium!: boolean;
 
-  @prop({ required: true })
-  public isFavorites: boolean;
-
-  @prop({ required: true, min: 1, max: 5 })
-  public rating!: number;
-
   @prop({ required: true, type: () => String, enum: Object.values(OfferType) })
   public type!: OfferType;
 
@@ -56,7 +50,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({ required: true, type: () => [String], enum: Object.values(Good)})
   public goods!: Good[];
 
-  @prop({ref: UserEntity, required: true
+  @prop({ref: () => UserEntity, required: true
   })
   public userId!: Ref<UserEntity>;
 
@@ -65,6 +59,12 @@ export class OfferEntity extends defaultClasses.TimeStamps {
 
   @prop({ required: true, type: () => OfferLocation })
   public location!: OfferLocation;
+
+  @prop({ default: 0 })
+  public rating: number;
+
+  @prop({ ref: () => UserEntity, type: () => [UserEntity], default: [] })
+  public isFavorite: Ref<UserEntity>[];
 
 }
 
