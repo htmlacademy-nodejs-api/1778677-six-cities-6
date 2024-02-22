@@ -9,9 +9,6 @@ const MAX_PRICE = 2000;
 const FIRST_WEEK_DAY = 1;
 const LAST_WEEK_DAY = 7;
 
-const MIN_RATING = 1;
-const MAX_RATING = 5;
-
 const MIN_BEDROOMS = 1;
 const MAX_BEDROOMS = 5;
 
@@ -31,8 +28,6 @@ export class TSVOfferGenerator implements OfferGenerator {
     const previewImage = getRandomItem<string>(this.mockData.previewImages);
     const images = getRandomItem<string[]>(this.mockData.images).join(',');
     const isPremium = getRandomItem<boolean>(this.mockData.isPremium);
-    const isFavorites = getRandomItem<boolean>(this.mockData.isFavorites);
-    const rating = generateRandomValue(MIN_RATING, MAX_RATING).toString();
     const type = getRandomItem(Object.values(OfferType));
     const bedrooms = generateRandomValue(MIN_BEDROOMS, MAX_BEDROOMS).toString();
     const maxAdults = generateRandomValue(MIN_ADULTS, MAX_ADULTS).toString();
@@ -53,8 +48,7 @@ export class TSVOfferGenerator implements OfferGenerator {
 
     return [
       title, description, postDate, city,
-      previewImage, images, isPremium, isFavorites,
-      rating, type, bedrooms, maxAdults, price, goods,
+      previewImage, images, isPremium, type, bedrooms, maxAdults, price, goods,
       name, email, avatar, password, userType, comment,
       latitude, longitude
     ].join('\t');

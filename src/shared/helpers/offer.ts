@@ -9,8 +9,6 @@ export function createOffer(offerData: string): Offer {
     previewImage,
     images,
     isPremium,
-    isFavorites,
-    rating,
     type,
     bedrooms,
     maxAdults,
@@ -20,7 +18,6 @@ export function createOffer(offerData: string): Offer {
     email,
     avatar,
     userType,
-    comment,
     latitude,
     longitude
   ] = offerData.replace('\n', '').split('\t');
@@ -34,8 +31,6 @@ export function createOffer(offerData: string): Offer {
     images: images.split(',')
       .map((image) => image.trim()),
     isPremium: isPremium === 'true',
-    isFavorites: isFavorites === 'true',
-    rating: Number.parseInt(rating, 10),
     type: type as OfferType,
     bedrooms: Number.parseInt(bedrooms, 10),
     maxAdults: Number.parseInt(maxAdults, 10),
@@ -43,7 +38,6 @@ export function createOffer(offerData: string): Offer {
     goods: goods.split(',')
       .map((good) => good.trim() as Good),
     user: { name, email, avatar, userType: userType as UserType },
-    comment: Number.parseInt(comment, 10),
     location: { latitude: parseFloat(latitude), longitude: parseFloat(longitude) },
   };
 }
